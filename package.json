@@ -1,0 +1,19 @@
+{
+  "name": "renju-game",
+  "version": "1.0.0",
+  "main": "game.js",
+  "type": "module",
+  "scripts": {
+    "start": "node game.js",
+    "dev": "nodemon game.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "nodemonConfig": {
+    "watch": ["*.js", "input.txt"]
+  }
+}
