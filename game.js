@@ -7,10 +7,6 @@ export const readInput = (filePath) =>
         .map((line) => line.trim())
         .filter((line) => line.length > 0)
 
-const logBoard = (board) => {
-    board.forEach((row) => console.log(row.reduce((acc, next) => acc + next.char, '')));
-}
-
 const getRows = (board) => {
     let rows = []
     for (let y = 0; y < board.length; y++) {
@@ -96,19 +92,23 @@ const getRightDiagonals = (board) => {
     return rightDiagonals;
 }
 
-const findWinner = (line) => {
-    const str = line.reduce((acc, next) => acc + next.char, '');
-    const regex = /(1+|2+)/g;
+const findWinner = (lines) => {
+    for (let line of lines) {
+        const str = line.reduce((acc, next) => acc + next.char, '');
+        const regex = /(1+|2+)/g;
 
-    let match;
-    while ((match = regex.exec(str)) !== null) {
-        if (match[0].length === 5) {
-            return {
-                char: line[match.index].char,
-                coordinates: line[match.index].coordinates
-            };
+        let match;
+        while ((match = regex.exec(str)) !== null) {
+            if (match[0].length === 5) {
+                return {
+                    char: line[match.index].char,
+                    coordinates: line[match.index].coordinates
+                };
+            }
         }
     }
+
+    return null;
 }
 
 
@@ -123,9 +123,7 @@ for (let testCase = 1; testCase <= testCases; testCase++) {
     const leftDiagonals = getLeftDiagonals(board)
     const rightDiagonals = getRightDiagonals(board)
 
-    const winnerLine  = [...rows, ...cols, ...leftDiagonals, ...rightDiagonals].find(findWinner)
-    const winner = winnerLine ? findWinner(winnerLine) : null;
-
+    const winner = findWinner([...rows, ...cols, ...leftDiagonals, ...rightDiagonals])
 
     fs.writeFileSync('./output.txt', `${winner ? `${winner.char}\n${winner.coordinates.y} ${winner.coordinates.x}` : 0}\n`, { flag: testCase === 1 ? 'w' : 'a' });
 }
