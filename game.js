@@ -7,35 +7,20 @@ export const readInput = (filePath) =>
         .map((line) => line.trim())
         .filter((line) => line.length > 0)
 
-const getRows = (board) => {
-    let rows = []
+const getLines = (board, lineDirection = 'row') => {
+    let lines = [];
     for (let y = 0; y < board.length; y++) {
         let line = [];
         for (let x = 0; x < board[y].length; x++) {
             line.push({
-                char: board[y][x],
-                coordinates: { x, y }
-            })
+                char: lineDirection === 'row' ? board[y][x] : board[x][y],
+                coordinates: lineDirection === 'row' ? { x, y } : { x: y, y: x }
+            });
         }
-        rows.push(line);
+        lines.push(line);
     }
-    return rows;
-}
-
-const getCols = (board) => {
-    let cols = []
-    for (let y = 0; y < board.length; y++) {
-        const line = []
-        for (let x = 0; x < board[y].length; x++) {
-            line.push({
-                char: board[x][y],
-                coordinates: { x: y, y: x }
-            })
-        }
-        cols.push(line);
-    }
-    return cols;
-}
+    return lines;
+};
 
 const getLeftDiagonals = (board) => {
     let leftDiagonals = []
@@ -118,8 +103,8 @@ const testCases = Number(input.shift())
 for (let testCase = 1; testCase <= testCases; testCase++) {
     const board = input.splice(0, 19)
 
-    const rows = getRows(board);
-    const cols = getCols(board)
+    const rows = getLines(board, 'row');
+    const cols = getLines(board, 'col')
     const leftDiagonals = getLeftDiagonals(board)
     const rightDiagonals = getRightDiagonals(board)
 
